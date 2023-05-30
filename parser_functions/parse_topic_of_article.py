@@ -1,4 +1,4 @@
-def parse_topic_of_article(article_soup):
+async def parse_topic_of_article(article_soup):
 	"""Парсим тему статьи."""
 	try:
 		# Парсим html блок div с данными.

@@ -1,4 +1,4 @@
-def parse_link_to_author_of_article(article_soup):
+async def parse_link_to_author_of_article(article_soup):
 	"""Парсим ссылку на автора статьи."""
 	try:
 		# Парсим ссылку на автора статьи.

@@ -1,51 +1,51 @@
-import sqlite3
+import aiosqlite
 
 
-class DB():
-	"""Класс для работы с БД."""
+async def create_db_or_connect_to_it():
+    """Создаем БД или же подключаемся к ней."""
 
-	def __init__(self):
+    conn = await aiosqlite.connect('articles.db')
+    cur = await conn.cursor()
 
-		# Создаем БД или же подключаемся к ней.
-		self.conn = sqlite3.connect('articles.db')
+    # Создаем таблицу в БД или же если она создана подключаемся к ней.
+    await cur.execute("""CREATE TABLE IF NOT EXISTS articles(
+        Имя_автора TEXT,
+        Количество_лайков TEXT,
+        Количество_комментариев TEXT,
+        Количество_репостов TEXT,
+        Название_статьи TEXT,
+        Количество_просмотров_статьи TEXT,
+        Тематика_статьи TEXT,
+        Время_добавлений_статьи TEXT,
+        Ссылка_на_автора_статьи TEXT,
+        Ссылка_на_статью TEXT,
+        Текст_статьи TEXT);
+    """)
 
-		# Создаем обьект cursor.
-		self.cur = self.conn.cursor()
+    # Сохраняем изменения.
+    await conn.commit()
 
-		# Создаем таблицу в БД или же если она создана подключаемся к ней.
-		self.cur.execute("""CREATE TABLE IF NOT EXISTS articles(
-			Имя_автора TEXT,
-			Количество_лайков TEXT,
-			Количество_комментариев TEXT,
-			Количество_репостов TEXT,
-			Название_статьи TEXT,
-			Количество_просмотров_статьи TEXT,
-			Тематика_статьи TEXT,
-			Время_добавлений_статьи TEXT,
-			Ссылка_на_автора_статьи TEXT,
-			Ссылка_на_статью TEXT,
-			Текст_статьи TEXT);
-		""")
-
-		# Сохраняем изменения.
-		self.conn.commit()
+    print("Создали БД или же подключились к ней.")
 
 
-	def adding_data(self, data_tuple):
-		"""Добавление данных в нашу таблицу articles."""
-		
-		# Сохраняем данные в таблице articles.
-		self.cur.execute("""INSERT INTO articles VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""", (data_tuple))
+async def clear_db():
+    """Очищаем БД."""
+    conn = await aiosqlite.connect('articles.db')
+    cur = await conn.cursor()
 
-		# Сохраняем изменения.
-		self.conn.commit()
+    await cur.execute("""DELETE FROM articles""")
+    await conn.commit()
+
+    print("Очистили БД.")
 
 
-	def clear_table(self):
-		"""Очищаем нашу таблицу articles."""
+async def add_data_to_db(tuple_with_data):
+    """Добавляем данные в БД."""
+    conn = await aiosqlite.connect('articles.db')
+    cur = await conn.cursor()
 
-		# Очищаем нащу табличку.
-		self.cur.execute("""DELETE FROM articles""")
+    # Сохраняем данные в таблице articles.
+    await cur.execute("""INSERT INTO articles VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""", (tuple_with_data))
+    await conn.commit()
 
-		# Сохраняем изменения.
-		self.conn.commit()
+    print("Добавили данные в БД.")

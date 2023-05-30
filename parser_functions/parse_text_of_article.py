@@ -1,4 +1,4 @@
-def parse_text_of_article(article_soup):
+async def parse_text_of_article(article_soup):
 	"""Парсим текст статьи."""
 	try:
 		# Текст статьи.

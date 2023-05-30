@@ -1,4 +1,4 @@
-def parse_number_of_favorites(article_soup):
+async def parse_number_of_favorites(article_soup):
 	"""Парсим количество сделанных репостов."""
 	try:
 		# Парсим html блок div с данными.

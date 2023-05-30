@@ -1,4 +1,4 @@
-def parse_time_of_adding_article(article_soup):
+async def parse_time_of_adding_article(article_soup):
 	"""Парсим время добавления статьи."""
 	try:
 		# Парсим время добавления статьи.
